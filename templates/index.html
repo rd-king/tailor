@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <!-- Page Wrapper -->
+    <div class="page-wrapper">
+
+        <!-- Page Content -->
+        <div class="content container-fluid">
+
+
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card dash-widget">
+                        <div class="card-body">
+                            <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
+                            <div class="dash-widget-info">
+                                <h3>{{ total_customer }}</h3>
+                                <span>Customer</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card dash-widget">
+                        <div class="card-body">
+                            <span class="dash-widget-icon"><i class="fa fa-trophy"></i></span>
+                            <div class="dash-widget-info">
+                                <h3>{{ total_order }}</h3>
+                                <span>Order</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card card-table flex-fill">
+                        <div class="card-header">
+                            <h3 class="card-title mb-0">Pending Order</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table custom-table table-nowrap mb-0">
+                                    <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Date</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for i in pending_order %}
+                                        <tr>
+                                            <td>
+                                                <a href="/measurement/viewMeasurement/?customerId={{ i.order_CustomerId.id }}">{{ i.order_CustomerId.name }}</a>
+                                            </td>
+                                            <td>
+                                                <h2>{{ i.date }}</h2>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {% if pending_order|length > 10 %}
+                            <div class="card-footer">
+                                <a href="payments.html">View all Pending orders</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <!-- /Page Content -->
+
+    </div>
+    <!-- /Page Wrapper -->
+
+{% endblock %}

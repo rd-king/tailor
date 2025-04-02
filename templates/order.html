@@ -1,0 +1,401 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <style>
+        .image-upload > input {
+            display: none;
+        }
+    </style>
+
+    <!-- Page Wrapper -->
+    <div class="page-wrapper">
+
+        <!-- Page Content -->
+        <div class="content container-fluid">
+
+            <div class="card tab-box">
+                <div class="row user-tabs">
+                    <div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
+                        <ul class="nav nav-tabs nav-tabs-bottom">
+                            <li class="nav-item col-6"><a href="#pending_order" data-toggle="tab"
+                                                          class="nav-link active"
+                                                          id="order_navigator">Pending</a>
+                            </li>
+                            <li class="nav-item col-6"><a href="#done_order" data-toggle="tab"
+                                                          class="nav-link">Done</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content">
+
+                <!-- pending order Info Tab -->
+                <div id="pending_order" class="pro-overview tab-pane fade show active">
+                    <div class="row" id="pending_order_card_parent">
+                        {% for i in pending_OrderList %}
+                            <div class="col-sm-12 col-lg-3 col-md-6 d-flex" id="order_card_child_{{ i.id }}">
+                                <div class="card flex-fill">
+                                    <div class="card-header">
+                                        <ul role="tablist" class="nav nav-pills card-header-pills float-left">
+                                            <li class="nav-item">
+                                                <a href="#order_tab_customer_{{ i.id }}" data-toggle="tab"
+                                                   id="order_card_nav_pent_{{ i.id }}"
+                                                   class="nav-link active"><i class="fa fa-user"></i></a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#order_tab_pent_{{ i.id }}" data-toggle="tab"
+                                                   id="order_card_nav_pent_{{ i.id }}"
+                                                   class="nav-link">Pent</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#order_tab_shirt_{{ i.id }}" data-toggle="tab"
+                                                   id="order_card_nav_shirt_{{ i.id }}"
+                                                   class="nav-link">Shirt</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#" data-toggle="modal"
+                                                   data-target="#view_photo" style="color: #333333;"
+                                                   id="order_card_nav_photo_{{ i.id }}"
+                                                   onclick="view_photo('{{ i.photo }}')" class="nav-link">
+                                                    <i class="fa fa-image"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="tab-content" style="padding-top: 0%">
+                                        <div role="tabpanel" id="order_tab_customer_{{ i.id }}"
+                                             class="tab-pane fade show active">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped mb-0">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td id="order_pent_lambai_{{ i.id }}"><a
+                                                                href="/measurement/viewMeasurement/?customerId={{ i.order_CustomerId.id }}"
+                                                                style="color: black"><i
+                                                                class="fa fa-user"></i>&ensp;&ensp;{{ i.order_CustomerId.name }}
+                                                        </a>
+                                                        </td>
+                                                        <td id="order_pent_kamar_{{ i.id }}" style="width: 50%;"><a
+                                                                href="tel:{{ i.order_CustomerId.number }}"
+                                                                style="color: black"><i
+                                                                class="fa fa-phone"></i>&ensp;&ensp;{{ i.order_CustomerId.number }}
+                                                        </a>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td id="order_pent_seet_{{ i.id }}"><i
+                                                                class="fa fa-map-marker"></i>&ensp;&ensp;{{ i.order_CustomerId.address }}
+                                                        </td>
+                                                        <td id="order_pent_mori_{{ i.id }}" style="width: 50%;"><i
+                                                                class="fa fa-calendar"></i>&ensp;&ensp;{{ i.date }}</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div role="tabpanel" id="order_tab_pent_{{ i.id }}"
+                                             class="tab-pane fade show">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped mb-0">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>Lambai</td>
+                                                        <td id="order_pent_lambai_{{ i.id }}">{{ i.lambai_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Kamar</td>
+                                                        <td id="order_pent_kamar_{{ i.id }}">{{ i.kamar_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Seet</td>
+                                                        <td id="order_pent_seet_{{ i.id }}">{{ i.seet_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Mori</td>
+                                                        <td id="order_pent_mori_{{ i.id }}">{{ i.mori_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Jangh</td>
+                                                        <td id="order_pent_jangh_{{ i.id }}">{{ i.jangh_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Jolo</td>
+                                                        <td id="order_pent_jolo_{{ i.id }}">{{ i.jolo_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gothan</td>
+                                                        <td id="order_pent_gothan_{{ i.id }}">{{ i.gothan_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Lees</td>
+                                                        <td id="order_pent_lees_{{ i.id }}">{{ i.lees_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td id="order_pent_vigat_{{ i.id }}"
+                                                            colspan="2">{{ i.vigat_pent }}</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div role="tabpanel" id="order_tab_shirt_{{ i.id }}"
+                                             class="tab-pane fade">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped mb-0">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>Lambai</td>
+                                                        <td id="order_shirt_lambai_{{ i.id }}">{{ i.lambai_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Chati</td>
+                                                        <td id="order_shirt_chati_{{ i.id }}">{{ i.chati_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Bay</td>
+                                                        <td id="order_shirt_bay_{{ i.id }}">{{ i.bay_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Solder</td>
+                                                        <td id="order_shirt_solder_{{ i.id }}">{{ i.solder_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Kamar</td>
+                                                        <td id="order_shirt_kamar_{{ i.id }}">{{ i.kamar_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Pech</td>
+                                                        <td id="order_shirt_pech_{{ i.id }}">{{ i.pech_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Kolar</td>
+                                                        <td id="order_shirt_kolar_{{ i.id }}">{{ i.kolar_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Kaf</td>
+                                                        <td id="order_shirt_kaf_{{ i.id }}">{{ i.kaf_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td id="order_shirt_vigat_{{ i.id }}"
+                                                            colspan="2">{{ i.vigat_shirt }}</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+                <!-- /order Info Tab -->
+
+                <!-- done order Info Tab -->
+                <div id="done_order" class="pro-overview tab-pane fade show">
+                    <div class="row" id="done_order_card_parent">
+                        {% for i in done_OrderList %}
+                            <div class="col-sm-12 col-lg-3 col-md-6 d-flex" id="order_card_child_{{ i.id }}">
+                                <div class="card flex-fill">
+                                    <div class="card-header">
+                                        <ul role="tablist" class="nav nav-pills card-header-pills float-left">
+                                            <li class="nav-item">
+                                                <a href="#order_tab_customer_{{ i.id }}" data-toggle="tab"
+                                                   id="order_card_nav_pent_{{ i.id }}"
+                                                   class="nav-link active"><i class="fa fa-user"></i></a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#order_tab_pent_{{ i.id }}" data-toggle="tab"
+                                                   id="order_card_nav_pent_{{ i.id }}"
+                                                   class="nav-link">Pent</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#order_tab_shirt_{{ i.id }}" data-toggle="tab"
+                                                   id="order_card_nav_shirt_{{ i.id }}"
+                                                   class="nav-link">Shirt</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#" data-toggle="modal"
+                                                   data-target="#view_photo" style="color: #333333;"
+                                                   id="order_card_nav_photo_{{ i.id }}"
+                                                   onclick="view_photo('{{ i.photo }}')" class="nav-link">
+                                                    <i class="fa fa-image"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="tab-content" style="padding-top: 0%">
+                                        <div role="tabpanel" id="order_tab_customer_{{ i.id }}"
+                                             class="tab-pane fade show active">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped mb-0">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td id="order_pent_lambai_{{ i.id }}"><a
+                                                                href="/measurement/viewMeasurement/?customerId={{ i.order_CustomerId.id }}"
+                                                                style="color: black"><i
+                                                                class="fa fa-user"></i>&ensp;&ensp;{{ i.order_CustomerId.name }}
+                                                        </a>
+                                                        </td>
+                                                        <td id="order_pent_kamar_{{ i.id }}" style="width: 50%;"><a
+                                                                href="tel:{{ i.order_CustomerId.number }}"
+                                                                style="color: black"><i
+                                                                class="fa fa-phone"></i>&ensp;&ensp;{{ i.order_CustomerId.number }}
+                                                        </a>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td id="order_pent_seet_{{ i.id }}"><i
+                                                                class="fa fa-map-marker"></i>&ensp;&ensp;{{ i.order_CustomerId.address }}
+                                                        </td>
+                                                        <td id="order_pent_mori_{{ i.id }}" style="width: 50%;"><i
+                                                                class="fa fa-calendar"></i>&ensp;&ensp;{{ i.date }}</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div role="tabpanel" id="order_tab_pent_{{ i.id }}"
+                                             class="tab-pane fade show">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped mb-0">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>Lambai</td>
+                                                        <td id="order_pent_lambai_{{ i.id }}">{{ i.lambai_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Kamar</td>
+                                                        <td id="order_pent_kamar_{{ i.id }}">{{ i.kamar_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Seet</td>
+                                                        <td id="order_pent_seet_{{ i.id }}">{{ i.seet_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Mori</td>
+                                                        <td id="order_pent_mori_{{ i.id }}">{{ i.mori_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Jangh</td>
+                                                        <td id="order_pent_jangh_{{ i.id }}">{{ i.jangh_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Jolo</td>
+                                                        <td id="order_pent_jolo_{{ i.id }}">{{ i.jolo_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gothan</td>
+                                                        <td id="order_pent_gothan_{{ i.id }}">{{ i.gothan_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Lees</td>
+                                                        <td id="order_pent_lees_{{ i.id }}">{{ i.lees_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td id="order_pent_vigat_{{ i.id }}"
+                                                            colspan="2">{{ i.vigat_pent }}</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div role="tabpanel" id="order_tab_shirt_{{ i.id }}"
+                                             class="tab-pane fade">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped mb-0">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>Lambai</td>
+                                                        <td id="order_shirt_lambai_{{ i.id }}">{{ i.lambai_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Chati</td>
+                                                        <td id="order_shirt_chati_{{ i.id }}">{{ i.chati_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Bay</td>
+                                                        <td id="order_shirt_bay_{{ i.id }}">{{ i.bay_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Solder</td>
+                                                        <td id="order_shirt_solder_{{ i.id }}">{{ i.solder_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Kamar</td>
+                                                        <td id="order_shirt_kamar_{{ i.id }}">{{ i.kamar_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Pech</td>
+                                                        <td id="order_shirt_pech_{{ i.id }}">{{ i.pech_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Kolar</td>
+                                                        <td id="order_shirt_kolar_{{ i.id }}">{{ i.kolar_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Kaf</td>
+                                                        <td id="order_shirt_kaf_{{ i.id }}">{{ i.kaf_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td id="order_shirt_vigat_{{ i.id }}"
+                                                            colspan="2">{{ i.vigat_shirt }}</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+                <!-- /order Info Tab -->
+
+
+            </div>
+        </div>
+        <!-- /Page Content -->
+
+        <!-- -------------------------------- photo POP UP --------------------------- -->
+        <!-- view photo Modal -->
+        <div id="view_photo" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                id="closeViewPhoto">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <img id="view_photo_image" style="width: 100%">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /view photo Modal -->
+        <!-- -------------------------------- / photo POP UP --------------------------- -->
+
+
+    </div>
+    <!-- /Page Wrapper -->
+
+    <!-- inserted photo show -->
+    <script type="text/javascript">
+        function view_photo(photo) {
+            document.getElementById('view_photo_image').src = '/media/' + photo;
+        }
+    </script>
+    <!-- / inserted photo show -->
+
+
+
+
+
+
+{% endblock %}

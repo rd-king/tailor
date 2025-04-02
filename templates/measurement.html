@@ -1,0 +1,2093 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <style>
+        .image-upload > input {
+            display: none;
+        }
+    </style>
+
+    <!-- Page Wrapper -->
+    <div class="page-wrapper">
+
+        <!-- Page Content -->
+        <div class="content container-fluid">
+
+
+            <div class="card tab-box">
+                <div class="row user-tabs">
+                    <div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
+                        <ul class="nav nav-tabs nav-tabs-bottom">
+                            <marquee behavior="scroll" direction="left" scrollamount="5">
+                                <h4 style="font-family:'Times New Roman', serif;font-size: 16px">
+                                    <i class="fa fa-user"></i>&emsp;<span
+                                        style="color: #495057;">{{ getCustomer.name|upper }}</span>&emsp;|&emsp;<i
+                                        class="fa fa-phone"></i>&emsp;{{ getCustomer.number }}&emsp;|&emsp;<i
+                                        class="fa fa-map-marker"></i>&emsp;{{ getCustomer.address|upper }}
+                                </h4>
+                            </marquee>
+                            <li class="nav-item"><a href="#pending_order" data-toggle="tab"
+                                                    class="nav-link active" id="order_navigator">Order</a>
+                            </li>
+                            <li class="nav-item"><a href="#measurement" data-toggle="tab"
+                                                    class="nav-link">Measurement</a>
+                            </li>
+                            <li class="nav-item"><a href="#history" data-toggle="tab"
+                                                    class="nav-link">History</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content">
+
+                <!-- order Info Tab -->
+                <div id="pending_order" class="pro-overview tab-pane fade show active">
+                    <div class="row" id="order_card_parent">
+                        {% for i in orderList %}
+                            <div class="col-sm-12 col-lg-3 col-md-6 d-flex" id="order_card_child_{{ i.id }}">
+                                <div class="card flex-fill">
+                                    <div class="card-header">
+                                        <ul role="tablist" class="nav nav-pills card-header-pills float-left">
+                                            <li class="nav-item">
+                                                <a href="#order_tab_pent_{{ i.id }}" data-toggle="tab"
+                                                   id="order_card_nav_pent_{{ i.id }}"
+                                                   class="nav-link active">Pent</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#order_tab_shirt_{{ i.id }}" data-toggle="tab"
+                                                   id="order_card_nav_shirt_{{ i.id }}"
+                                                   class="nav-link">Shirt</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#order_tab_action_{{ i.id }}" data-toggle="tab"
+                                                   id="order_card_nav_action_{{ i.id }}"
+                                                   class="nav-link ">Action</a>
+                                            </li>
+                                            {% if i.photo != '' %}
+                                                <li class="nav-item">
+                                                    <a data-toggle="modal"
+                                                       data-target="#view_photo" style="color: #333333;"
+                                                       id="order_card_nav_photo_{{ i.id }}"
+                                                       onclick="view_photo('{{ i.photo }}')" class="nav-link">
+                                                        <i class="fa fa-image"></i></a>
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                    <div class="tab-content" style="padding-top: 0%">
+                                        <div role="tabpanel" id="order_tab_pent_{{ i.id }}"
+                                             class="tab-pane fade show active">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped mb-0">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>Lambai</td>
+                                                        <td id="order_pent_lambai_{{ i.id }}">{{ i.lambai_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Kamar</td>
+                                                        <td id="order_pent_kamar_{{ i.id }}">{{ i.kamar_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Seet</td>
+                                                        <td id="order_pent_seet_{{ i.id }}">{{ i.seet_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Mori</td>
+                                                        <td id="order_pent_mori_{{ i.id }}">{{ i.mori_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Jangh</td>
+                                                        <td id="order_pent_jangh_{{ i.id }}">{{ i.jangh_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Jolo</td>
+                                                        <td id="order_pent_jolo_{{ i.id }}">{{ i.jolo_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gothan</td>
+                                                        <td id="order_pent_gothan_{{ i.id }}">{{ i.gothan_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Lees</td>
+                                                        <td id="order_pent_lees_{{ i.id }}">{{ i.lees_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td id="order_pent_vigat_{{ i.id }}"
+                                                            colspan="2">{{ i.vigat_pent }}
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div role="tabpanel" id="order_tab_shirt_{{ i.id }}"
+                                             class="tab-pane fade">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped mb-0">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>Lambai</td>
+                                                        <td id="order_shirt_lambai_{{ i.id }}">{{ i.lambai_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Chati</td>
+                                                        <td id="order_shirt_chati_{{ i.id }}">{{ i.chati_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Bay</td>
+                                                        <td id="order_shirt_bay_{{ i.id }}">{{ i.bay_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Solder</td>
+                                                        <td id="order_shirt_solder_{{ i.id }}">{{ i.solder_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Kamar</td>
+                                                        <td id="order_shirt_kamar_{{ i.id }}">{{ i.kamar_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Pech</td>
+                                                        <td id="order_shirt_pech_{{ i.id }}">{{ i.pech_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Kolar</td>
+                                                        <td id="order_shirt_kolar_{{ i.id }}">{{ i.kolar_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Kaf</td>
+                                                        <td id="order_shirt_kaf_{{ i.id }}">{{ i.kaf_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td id="order_shirt_vigat_{{ i.id }}"
+                                                            colspan="2">{{ i.vigat_shirt }}
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div role="tabpanel" id="order_tab_action_{{ i.id }}"
+                                             class="tab-pane fade">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped mb-0">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <a data-toggle="modal"
+                                                               data-target="#edit_order"
+                                                               style="color: #333333;cursor: pointer;"
+                                                               onclick="editOrder({{ i.id }})">
+                                                                <i class="fa fa-pencil col-2"></i>Edit </a>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <a style="color: #333333;cursor: pointer;"
+                                                               onclick="deleteOrder({{ i.id }})">
+                                                                <i class="fa fa-trash col-2"></i>Delete</a>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <a style="color: #333333;cursor: pointer;"
+                                                               onclick="changeStatus({{ i.id }})">
+                                                                <i class="fa fa-check col-2"></i>Done</a>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+                <!-- /order Info Tab -->
+
+                <!-- measurement Info Tab -->
+                <div id="measurement" class="pro-overview tab-pane fade show">
+                    <div class="row " id="measurement_card_parent">
+                        {% for i in measurementList %}
+                            <div class="col-sm-12 col-lg-3 col-md-6 d-flex" id="measurement_card_child_{{ i.id }}">
+                                <div class="card flex-fill">
+                                    <div class="card-header">
+                                        <ul role="tablist" class="nav nav-pills card-header-pills float-left">
+                                            <li class="nav-item">
+                                                <a href="#measurement_tab_pent_{{ i.id }}" data-toggle="tab"
+                                                   class="nav-link active">Pent</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#measurement_tab_shirt_{{ i.id }}" data-toggle="tab"
+                                                   class="nav-link">Shirt</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#measurement_tab_action_{{ i.id }}" data-toggle="tab"
+                                                   class="nav-link ">Action</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="tab-content" style="padding-top: 0%">
+                                        <div role="tabpanel" id="measurement_tab_pent_{{ i.id }}"
+                                             class="tab-pane fade show active">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped mb-0">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>Lambai</td>
+                                                        <td id="measurement_pent_lambai_{{ i.id }}">{{ i.lambai_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Kamar</td>
+                                                        <td id="measurement_pent_kamar_{{ i.id }}">{{ i.kamar_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Seet</td>
+                                                        <td id="measurement_pent_seet_{{ i.id }}">{{ i.seet_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Mori</td>
+                                                        <td id="measurement_pent_mori_{{ i.id }}">{{ i.mori_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Jangh</td>
+                                                        <td id="measurement_pent_jangh_{{ i.id }}">{{ i.jangh_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Jolo</td>
+                                                        <td id="measurement_pent_jolo_{{ i.id }}">{{ i.jolo_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gothan</td>
+                                                        <td id="measurement_pent_gothan_{{ i.id }}">{{ i.gothan_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Lees</td>
+                                                        <td id="measurement_pent_lees_{{ i.id }}">{{ i.lees_pent }}</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div role="tabpanel" id="measurement_tab_shirt_{{ i.id }}"
+                                             class="tab-pane fade  ">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped mb-0">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>Lambai</td>
+                                                        <td id="measurement_shirt_lambai_{{ i.id }}">{{ i.lambai_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Chati</td>
+                                                        <td id="measurement_shirt_chati_{{ i.id }}">{{ i.chati_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Bay</td>
+                                                        <td id="measurement_shirt_bay_{{ i.id }}">{{ i.bay_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Solder</td>
+                                                        <td id="measurement_shirt_solder_{{ i.id }}">{{ i.solder_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Kamar</td>
+                                                        <td id="measurement_shirt_kamar_{{ i.id }}">{{ i.kamar_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Pech</td>
+                                                        <td id="measurement_shirt_pech_{{ i.id }}">{{ i.pech_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Kolar</td>
+                                                        <td id="measurement_shirt_kolar_{{ i.id }}">{{ i.kolar_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Kaf</td>
+                                                        <td id="measurement_shirt_kaf_{{ i.id }}">{{ i.kaf_shirt }}</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div role="tabpanel" id="measurement_tab_action_{{ i.id }}"
+                                             class="tab-pane fade  ">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped mb-0">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <a data-toggle="modal"
+                                                               data-target="#create_order"
+                                                               style="color: #333333;cursor: pointer;"
+                                                               onclick="createOrder({{ i.id }})">
+                                                                <i class="fa fa-plus col-2"></i>Place Order </a>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <a data-toggle="modal"
+                                                               data-target="#edit_measurement"
+                                                               style="color: #333333;cursor: pointer;"
+                                                               onclick="editMeasurement({{ i.id }})">
+                                                                <i class="fa fa-pencil col-2"></i>Edit </a>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <a style="color: #333333;cursor: pointer;"
+                                                               onclick="deleteMeasurement({{ i.id }})">
+                                                                <i class="fa fa-trash col-2"></i>Delete</a>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <div class="col-sm-12 col-lg-3 col-md-6 d-flex">
+                            <div class="flex-fill">
+                                <div class="tab-content" style="text-align: center">
+                                    <a class="btn btn-primary" data-toggle="modal"
+                                       data-target="#create_measurement" style="cursor: pointer"><i
+                                            class="fa fa-plus-circle" style="color: white"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /measurement Info Tab -->
+
+                <!-- history Tab -->
+                <div id="history" class="pro-overview tab-pane fade show">
+                    <div class="row" id="history_card_parent">
+                        {% for i in historyList %}
+                            <div class="col-sm-12 col-lg-3 col-md-6 d-flex" id="history_card_child_{{ i.id }}">
+                                <div class="card flex-fill">
+                                    <div class="card-header">
+                                        <ul role="tablist" class="nav nav-pills card-header-pills float-left">
+                                            <li class="nav-item">
+                                                <a href="#history_tab_pent_{{ i.id }}" data-toggle="tab"
+                                                   id="history_card_nav_pent_{{ i.id }}"
+                                                   class="nav-link active">Pent</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#history_tab_shirt_{{ i.id }}" data-toggle="tab"
+                                                   id="history_card_nav_shirt_{{ i.id }}"
+                                                   class="nav-link">Shirt</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#history_tab_action_{{ i.id }}" data-toggle="tab"
+                                                   id="history_card_nav_action_{{ i.id }}"
+                                                   class="nav-link ">Action</a>
+                                            </li>
+                                            {% if i.photo != '' %}
+                                                <li class="nav-item">
+                                                    <a data-toggle="modal"
+                                                       data-target="#view_photo" style="color: #333333;"
+                                                       id="history_card_nav_photo_{{ i.id }}"
+                                                       onclick="view_photo('{{ i.photo }}')" class="nav-link">
+                                                        <i class="fa fa-image"></i></a>
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                    <div class="tab-content" style="padding-top: 0%">
+                                        <div role="tabpanel" id="history_tab_pent_{{ i.id }}"
+                                             class="tab-pane fade show active">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped mb-0">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>Lambai</td>
+                                                        <td id="history_pent_lambai_{{ i.id }}">{{ i.lambai_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Kamar</td>
+                                                        <td id="history_pent_kamar_{{ i.id }}">{{ i.kamar_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Seet</td>
+                                                        <td id="history_pent_seet_{{ i.id }}">{{ i.seet_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Mori</td>
+                                                        <td id="history_pent_mori_{{ i.id }}">{{ i.mori_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Jangh</td>
+                                                        <td id="history_pent_jangh_{{ i.id }}">{{ i.jangh_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Jolo</td>
+                                                        <td id="history_pent_jolo_{{ i.id }}">{{ i.jolo_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gothan</td>
+                                                        <td id="history_pent_gothan_{{ i.id }}">{{ i.gothan_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Lees</td>
+                                                        <td id="history_pent_lees_{{ i.id }}">{{ i.lees_pent }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td id="history_pent_vigat_{{ i.id }}"
+                                                            colspan="2">{{ i.vigat_pent }}
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div role="tabpanel" id="history_tab_shirt_{{ i.id }}"
+                                             class="tab-pane fade">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped mb-0">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>Lambai</td>
+                                                        <td id="history_shirt_lambai_{{ i.id }}">{{ i.lambai_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Chati</td>
+                                                        <td id="history_shirt_chati_{{ i.id }}">{{ i.chati_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Bay</td>
+                                                        <td id="history_shirt_bay_{{ i.id }}">{{ i.bay_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Solder</td>
+                                                        <td id="history_shirt_solder_{{ i.id }}">{{ i.solder_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Kamar</td>
+                                                        <td id="history_shirt_kamar_{{ i.id }}">{{ i.kamar_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Pech</td>
+                                                        <td id="history_shirt_pech_{{ i.id }}">{{ i.pech_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Kolar</td>
+                                                        <td id="history_shirt_kolar_{{ i.id }}">{{ i.kolar_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Kaf</td>
+                                                        <td id="history_shirt_kaf_{{ i.id }}">{{ i.kaf_shirt }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td id="history_shirt_vigat_{{ i.id }}"
+                                                            colspan="2">{{ i.vigat_shirt }}
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div role="tabpanel" id="history_tab_action_{{ i.id }}"
+                                             class="tab-pane fade">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped mb-0">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <a style="color: #333333;cursor: pointer;"
+                                                               onclick="changeStatus({{ i.id }})">
+                                                                <i class="fa fa-repeat col-2"></i>Restore</a>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+                <!-- /history Tab -->
+
+            </div>
+        </div>
+        <!-- /Page Content -->
+
+        <!-- -------------------------------- photo POP UP --------------------------- -->
+        <!-- view photo Modal -->
+        <div id="view_photo" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                id="closeViewPhoto">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <img id="view_photo_image" style="width: 100%">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /view photo Modal -->
+        <!-- -------------------------------- / photo POP UP --------------------------- -->
+
+
+        <!-- -------------------------------- measurement FORM --------------------------- -->
+        <!-- create_measurement Modal -->
+        <div id="create_measurement" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Measurement</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                id="closeCreateMeasurement">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" id="createMeasurementForm">
+                            {% csrf_token %}
+                            <input type="hidden" id="create_measurement_customerId" name="customerId"
+                                   value="{{ getCustomer.id }}">
+                            <div>
+                                <div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Lambai</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Kamar</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_measurement_lambai_pent"
+                                                   name="lambai_pent">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_measurement_kamar_pent"
+                                                   name="kamar_pent">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Seet</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Mori</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_measurement_seet_pent"
+                                                   name="seet_pent">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_measurement_mori_pent"
+                                                   name="mori_pent">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Jangh</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">jolo</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_measurement_jangh_pent"
+                                                   name="jangh_pent">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_measurement_jolo_pent"
+                                                   name="jolo_pent">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Gothan</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Lees</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_measurement_gothan_pent"
+                                                   name="gothan_pent">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_measurement_lees_pent"
+                                                   name="lees_pent">
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Lambai</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Chati</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_measurement_lambai_shirt"
+                                                   name="lambai_shirt">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_measurement_chati_shirt"
+                                                   name="chati_shirt">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Bay</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Solder</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_measurement_bay_shirt"
+                                                   name="bay_shirt">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_measurement_solder_shirt"
+                                                   name="solder_shirt">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Kamar</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Pech</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_measurement_kamar_shirt"
+                                                   name="kamar_shirt">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_measurement_pech_shirt"
+                                                   name="pech_shirt">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Kolar</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Kaf</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_measurement_kolar_shirt"
+                                                   name="kolar_shirt">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_measurement_kaf_shirt"
+                                                   name="kaf_shirt">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <button type="button" class="btn btn-primary" onclick="createMeasurement()">Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /create_measurement Modal -->
+
+        <!-- edit_measurement Modal -->
+        <div id="edit_measurement" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Measurement</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                id="closeEditMeasurement">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" id="editMeasurementForm">
+                            <input type="hidden" name="measurementId" id="edit_measurementId">
+                            {% csrf_token %}
+                            <input type="hidden" id="edit_measurement_customerId" name="customerId"
+                                   value="{{ getCustomer.id }}">
+                            <div>
+                                <div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Lambai</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Kamar</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_measurement_lambai_pent"
+                                                   name="lambai_pent">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_measurement_kamar_pent"
+                                                   name="kamar_pent">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Seet</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Mori</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_measurement_seet_pent"
+                                                   name="seet_pent">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_measurement_mori_pent"
+                                                   name="mori_pent">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Jangh</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">jolo</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_measurement_jangh_pent"
+                                                   name="jangh_pent">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_measurement_jolo_pent"
+                                                   name="jolo_pent">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Gothan</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Lees</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_measurement_gothan_pent"
+                                                   name="gothan_pent">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_measurement_lees_pent"
+                                                   name="lees_pent">
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Lambai</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Chati</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_measurement_lambai_shirt"
+                                                   name="lambai_shirt">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_measurement_chati_shirt"
+                                                   name="chati_shirt">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Bay</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Solder</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_measurement_bay_shirt"
+                                                   name="bay_shirt">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_measurement_solder_shirt"
+                                                   name="solder_shirt">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Kamar</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Pech</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_measurement_kamar_shirt"
+                                                   name="kamar_shirt">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_measurement_pech_shirt"
+                                                   name="pech_shirt">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Kolar</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Kaf</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_measurement_kolar_shirt"
+                                                   name="kolar_shirt">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_measurement_kaf_shirt"
+                                                   name="kaf_shirt">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <button type="button" class="btn btn-primary" onclick="updateMeasurement()">Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /edit_measurement Modal -->
+        <!-- -------------------------------- / measurement FORM --------------------------- -->
+
+        <!-- -------------------------------- order FORM --------------------------- -->
+        <!-- create_order Modal -->
+        <div id="create_order" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Order</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                id="closeCreateOrder">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" id="createOrderForm">
+                            {% csrf_token %}
+                            <input type="hidden" id="create_order_customerId" name="customerId"
+                                   value="{{ getCustomer.id }}">
+                            <input type="hidden" id="create_order_measurementId" name="measurementId">
+                            <div>
+                                <div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Lambai</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Kamar</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_order_lambai_pent"
+                                                   name="lambai_pent">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_order_kamar_pent"
+                                                   name="kamar_pent">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Seet</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Mori</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_order_seet_pent"
+                                                   name="seet_pent">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_order_mori_pent"
+                                                   name="mori_pent">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Jangh</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">jolo</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_order_jangh_pent"
+                                                   name="jangh_pent">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_order_jolo_pent"
+                                                   name="jolo_pent">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Gothan</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Lees</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_order_gothan_pent"
+                                                   name="gothan_pent">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_order_lees_pent"
+                                                   name="lees_pent">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-12 col-sm-12 col-12 col-form-label">Pent ni vigat</label>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <input type="text" class="form-control"
+                                                   id="create_order_vigat_pent"
+                                                   name="vigat_pent">
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Lambai</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Chati</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_order_lambai_shirt"
+                                                   name="lambai_shirt">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_order_chati_shirt"
+                                                   name="chati_shirt">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Bay</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Solder</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_order_bay_shirt"
+                                                   name="bay_shirt">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_order_solder_shirt"
+                                                   name="solder_shirt">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Kamar</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Pech</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_order_kamar_shirt"
+                                                   name="kamar_shirt">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_order_pech_shirt"
+                                                   name="pech_shirt">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Kolar</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Kaf</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_order_kolar_shirt"
+                                                   name="kolar_shirt">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="create_order_kaf_shirt"
+                                                   name="kaf_shirt">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-12 col-sm-12 col-12 col-form-label">Shirt ni vigat</label>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <input type="text" class="form-control"
+                                                   id="create_order_vigat_shirt"
+                                                   name="vigat_shirt">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="form-group row">
+                                <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label"
+                                       for="create_order_photo"><i class="fa fa-camera"></i></label>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12 image-upload">
+                                    <input type="file" class="btn" id="create_order_photo"
+                                           name="photo" accept="image/*" capture="camera"
+                                           onchange="load_create_order_photo(event)">
+                                    <img id="load_create_order_photo_output" style="width: 100%">
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <button type="button" class="btn btn-primary" onclick="placeOrder()">Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /create_order Modal -->
+
+        <!-- edit_order Modal -->
+        <div id="edit_order" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Order</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                id="closeEditOrder">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" id="editOrderForm">
+                            <input type="hidden" name="orderId" id="edit_orderId">
+                            {% csrf_token %}
+                            <input type="hidden" id="edit_order_customerId" name="customerId"
+                                   value="{{ getCustomer.id }}">
+                            <div>
+                                <div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Lambai</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Kamar</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_order_lambai_pent"
+                                                   name="lambai_pent">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_order_kamar_pent"
+                                                   name="kamar_pent">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Seet</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Mori</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_order_seet_pent"
+                                                   name="seet_pent">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_order_mori_pent"
+                                                   name="mori_pent">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Jangh</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">jolo</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_order_jangh_pent"
+                                                   name="jangh_pent">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_order_jolo_pent"
+                                                   name="jolo_pent">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Gothan</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Lees</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_order_gothan_pent"
+                                                   name="gothan_pent">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_order_lees_pent"
+                                                   name="lees_pent">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-12 col-sm-12 col-12 col-form-label">Pent ni vigat</label>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <input type="text" class="form-control"
+                                                   id="edit_order_vigat_pent"
+                                                   name="vigat_pent">
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Lambai</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Chati</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_order_lambai_shirt"
+                                                   name="lambai_shirt">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_order_chati_shirt"
+                                                   name="chati_shirt">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Bay</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Solder</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_order_bay_shirt"
+                                                   name="bay_shirt">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_order_solder_shirt"
+                                                   name="solder_shirt">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Kamar</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Pech</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_order_kamar_shirt"
+                                                   name="kamar_shirt">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_order_pech_shirt"
+                                                   name="pech_shirt">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-sm-6 col-6 col-form-label">Kolar</label>
+                                        <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label">Kaf</label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_order_kolar_shirt"
+                                                   name="kolar_shirt">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                            <input type="tel" class="form-control" id="edit_order_kaf_shirt"
+                                                   name="kaf_shirt">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-12 col-sm-12 col-12 col-form-label">Shirt ni vigat</label>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <input type="text" class="form-control"
+                                                   id="edit_order_vigat_shirt"
+                                                   name="vigat_shirt">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="form-group row">
+                                <label class="col-lg-6 col-sm-6 col-md-1 col-6 col-form-label"
+                                       for="edit_order_photo"><i class="fa fa-camera"></i></label>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12 image-upload">
+                                    <input type="file" class="btn" id="edit_order_photo"
+                                           name="photo" accept="image/*" capture="camera"
+                                           onchange="load_edit_order_photo(event)">
+                                    <img id="load_edit_order_photo_output" style="width: 100%">
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <button type="button" class="btn btn-primary" onclick="updateOrder()">Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /edit_order Modal -->
+        <!-- -------------------------------- / order FORM --------------------------- -->
+
+    </div>
+    <!-- /Page Wrapper -->
+
+    <!-- inserted photo show -->
+    <script type="text/javascript">
+        var load_create_order_photo = function (event) {
+            var image = document.getElementById('load_create_order_photo_output');
+            image.src = URL.createObjectURL(event.target.files[0]);
+        };
+
+        var load_edit_order_photo = function (event) {
+            var image = document.getElementById('load_edit_order_photo_output');
+            image.src = URL.createObjectURL(event.target.files[0]);
+        };
+    </script>
+    <!-- / inserted photo show -->
+
+    <!-- inserted photo show -->
+    <script type="text/javascript">
+        function view_photo(photo) {
+            document.getElementById('view_photo_image').src = '/media/' + photo;
+        }
+    </script>
+    <!-- / inserted photo show -->
+
+
+    <!-- -------------------------------- measurement JS --------------------------- -->
+    <!-- insert measurement  -->
+    <script type="text/javascript">
+        function createMeasurement() {
+            var elements = document.getElementById("createMeasurementForm");
+            var formData = new FormData();
+            for (var i = 0; i < elements.length; i++) {
+                formData.append(elements[i].name, elements[i].value);
+            }
+            var ajax = new XMLHttpRequest();
+            ajax.onreadystatechange = function () {
+                if (ajax.readyState == 4) {
+                    var jsn = JSON.parse(ajax.responseText);
+                    var data = JSON.parse(jsn);
+                    document.getElementById("createMeasurementForm").reset();
+                    document.getElementById('closeCreateMeasurement').click();
+
+                    var measurement_card_parent = document.getElementById('measurement_card_parent');
+                    var childElement = "<div class=\"col-sm-12 col-lg-3 col-md-6 d-flex\" id=\"measurement_card_child_" + data[0]['pk'] + "\">\n" +
+                        "                                <div class=\"card flex-fill\">\n" +
+                        "                                    <div class=\"card-header\">\n" +
+                        "                                        <ul role=\"tablist\" class=\"nav nav-pills card-header-pills float-left\">\n" +
+                        "                                            <li class=\"nav-item\">\n" +
+                        "                                                <a href=\"#measurement_tab_pent_" + data[0]['pk'] + "\" data-toggle=\"tab\"\n" +
+                        "                                                   class=\"nav-link active\">Pent</a>\n" +
+                        "                                            </li>\n" +
+                        "                                            <li class=\"nav-item\">\n" +
+                        "                                                <a href=\"#measurement_tab_shirt_" + data[0]['pk'] + "\" data-toggle=\"tab\"\n" +
+                        "                                                   class=\"nav-link\">Shirt</a>\n" +
+                        "                                            </li>\n" +
+                        "                                            <li class=\"nav-item\">\n" +
+                        "                                                <a href=\"#measurement_tab_action_" + data[0]['pk'] + "\" data-toggle=\"tab\"\n" +
+                        "                                                   class=\"nav-link \">Action</a>\n" +
+                        "                                            </li>\n" +
+                        "                                        </ul>\n" +
+                        "                                    </div>\n" +
+                        "                                    <div class=\"tab-content\" style=\"padding-top: 0%\">\n" +
+                        "                                        <div role=\"tabpanel\" id=\"measurement_tab_pent_" + data[0]['pk'] + "\"\n" +
+                        "                                             class=\"tab-pane fade show active\">\n" +
+                        "                                            <div class=\"table-responsive\">\n" +
+                        "                                                <table class=\"table table-striped mb-0\">\n" +
+                        "                                                    <tbody>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Lambai</td>\n" +
+                        "                                                        <td id=\"measurement_pent_lambai_" + data[0]['pk'] + "\">" + data[0]['fields']['lambai_pent'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Kamar</td>\n" +
+                        "                                                        <td id=\"measurement_pent_kamar_" + data[0]['pk'] + "\">" + data[0]['fields']['kamar_pent'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Seet</td>\n" +
+                        "                                                        <td id=\"measurement_pent_seet_" + data[0]['pk'] + "\">" + data[0]['fields']['seet_pent'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Mori</td>\n" +
+                        "                                                        <td id=\"measurement_pent_mori_" + data[0]['pk'] + "\">" + data[0]['fields']['mori_pent'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Jangh</td>\n" +
+                        "                                                        <td id=\"measurement_pent_jangh_" + data[0]['pk'] + "\">" + data[0]['fields']['jangh_pent'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Jolo</td>\n" +
+                        "                                                        <td id=\"measurement_pent_jolo_" + data[0]['pk'] + "\">" + data[0]['fields']['jolo_pent'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Gothan</td>\n" +
+                        "                                                        <td id=\"measurement_pent_gothan_" + data[0]['pk'] + "\">" + data[0]['fields']['gothan_pent'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Lees</td>\n" +
+                        "                                                        <td id=\"measurement_pent_lees_" + data[0]['pk'] + "\">" + data[0]['fields']['lees_pent'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    </tbody>\n" +
+                        "                                                </table>\n" +
+                        "                                            </div>\n" +
+                        "                                        </div>\n" +
+                        "                                        <div role=\"tabpanel\" id=\"measurement_tab_shirt_" + data[0]['pk'] + "\"\n" +
+                        "                                             class=\"tab-pane fade  \">\n" +
+                        "                                            <div class=\"table-responsive\">\n" +
+                        "                                                <table class=\"table table-striped mb-0\">\n" +
+                        "                                                    <tbody>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Lambai</td>\n" +
+                        "                                                        <td id=\"measurement_shirt_lambai_" + data[0]['pk'] + "\">" + data[0]['fields']['lambai_shirt'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Chati</td>\n" +
+                        "                                                        <td id=\"measurement_shirt_chati_" + data[0]['pk'] + "\">" + data[0]['fields']['chati_shirt'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Bay</td>\n" +
+                        "                                                        <td id=\"measurement_shirt_bay_" + data[0]['pk'] + "\">" + data[0]['fields']['bay_shirt'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Solder</td>\n" +
+                        "                                                        <td id=\"measurement_shirt_solder_" + data[0]['pk'] + "\">" + data[0]['fields']['solder_shirt'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Kamar</td>\n" +
+                        "                                                        <td id=\"measurement_shirt_kamar_" + data[0]['pk'] + "\">" + data[0]['fields']['kamar_shirt'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Pech</td>\n" +
+                        "                                                        <td id=\"measurement_shirt_pech_" + data[0]['pk'] + "\">" + data[0]['fields']['pech_shirt'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Kolar</td>\n" +
+                        "                                                        <td id=\"measurement_shirt_kolar_" + data[0]['pk'] + "\">" + data[0]['fields']['kolar_shirt'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Kaf</td>\n" +
+                        "                                                        <td id=\"measurement_shirt_kaf_" + data[0]['pk'] + "\">" + data[0]['fields']['kaf_shirt'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    </tbody>\n" +
+                        "                                                </table>\n" +
+                        "                                            </div>\n" +
+                        "                                        </div>\n" +
+                        "                                        <div role=\"tabpanel\" id=\"measurement_tab_action_" + data[0]['pk'] + "\"\n" +
+                        "                                             class=\"tab-pane fade  \">\n" +
+                        "                                            <div class=\"table-responsive\">\n" +
+                        "                                                <table class=\"table table-striped mb-0\">\n" +
+                        "                                                    <tbody>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>\n" +
+                        "                                                            <a data-toggle=\"modal\"\n" +
+                        "                                                               data-target=\"#create_order\" style=\"color: #333333;cursor: pointer;\"\n" +
+                        "                                                               onclick=\"createOrder(" + data[0]['pk'] + ")\">\n" +
+                        "                                                                <i class=\"fa fa-plus col-2\"></i>Place Order </a>\n" +
+                        "                                                        </td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>\n" +
+                        "                                                            <a data-toggle=\"modal\"\n" +
+                        "                                                               data-target=\"#edit_measurement\" style=\"color: #333333;cursor: pointer;\"\n" +
+                        "                                                               onclick=\"editMeasurement(" + data[0]['pk'] + ")\">\n" +
+                        "                                                                <i class=\"fa fa-pencil col-2\"></i>Edit </a>\n" +
+                        "                                                        </td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>\n" +
+                        "                                                            <a style=\"color: #333333;cursor: pointer;\"\n" +
+                        "                                                               onclick=\"deleteMeasurement(" + data[0]['pk'] + ")\">\n" +
+                        "                                                                <i class=\"fa fa-trash col-2\"></i>Delete</a>\n" +
+                        "                                                        </td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    </tbody>\n" +
+                        "                                                </table>\n" +
+                        "                                            </div>\n" +
+                        "                                        </div>\n" +
+                        "                                    </div>\n" +
+                        "                                </div>\n" +
+                        "                            </div>";
+
+                    measurement_card_parent.innerHTML = childElement + measurement_card_parent.innerHTML;
+
+
+                }
+            };
+            ajax.open("post", "/measurement/insertMeasurement/");
+            ajax.send(formData)
+        }
+    </script>
+    <!--  / insert measurement  -->
+
+    <!-- delete measurement -->
+    <script type="text/javascript">
+        function deleteMeasurement(measurementId) {
+
+            var ajax = new XMLHttpRequest();
+            ajax.onreadystatechange = function () {
+                if (ajax.readyState == 4) {
+                    var jsn = JSON.parse(ajax.responseText);
+                    var data = JSON.parse(jsn);
+                    var deleteMeasurementCard = document.getElementById("measurement_card_child_" + data[0]['pk']);
+                    deleteMeasurementCard.remove();
+                }
+            };
+            ajax.open("get", "/measurement/deleteMeasurement?measurementId=" + measurementId, true);
+
+            ajax.send()
+        }
+    </script>
+    <!--  / delete measurement -->
+
+    <!-- edit measurement  -->
+    <script type="text/javascript">
+        function editMeasurement(measurementId) {
+            var ajax = new XMLHttpRequest();
+            ajax.onreadystatechange = function () {
+                if (ajax.readyState == 4) {
+                    var jsn = JSON.parse(ajax.responseText);
+                    var data = JSON.parse(jsn);
+
+                    document.getElementById('edit_measurementId').value = data[0]['pk'];
+                    document.getElementById('edit_measurement_lambai_pent').value = data[0]['fields']['lambai_pent'];
+                    document.getElementById('edit_measurement_kamar_pent').value = data[0]['fields']['kamar_pent'];
+                    document.getElementById('edit_measurement_seet_pent').value = data[0]['fields']['seet_pent'];
+                    document.getElementById('edit_measurement_mori_pent').value = data[0]['fields']['mori_pent'];
+                    document.getElementById('edit_measurement_jangh_pent').value = data[0]['fields']['jangh_pent'];
+                    document.getElementById('edit_measurement_jolo_pent').value = data[0]['fields']['jolo_pent'];
+                    document.getElementById('edit_measurement_gothan_pent').value = data[0]['fields']['gothan_pent'];
+                    document.getElementById('edit_measurement_lees_pent').value = data[0]['fields']['lees_pent'];
+
+                    document.getElementById('edit_measurement_lambai_shirt').value = data[0]['fields']['lambai_shirt'];
+                    document.getElementById('edit_measurement_chati_shirt').value = data[0]['fields']['chati_shirt'];
+                    document.getElementById('edit_measurement_bay_shirt').value = data[0]['fields']['bay_shirt'];
+                    document.getElementById('edit_measurement_solder_shirt').value = data[0]['fields']['solder_shirt'];
+                    document.getElementById('edit_measurement_kamar_shirt').value = data[0]['fields']['kamar_shirt'];
+                    document.getElementById('edit_measurement_pech_shirt').value = data[0]['fields']['pech_shirt'];
+                    document.getElementById('edit_measurement_kolar_shirt').value = data[0]['fields']['kolar_shirt'];
+                    document.getElementById('edit_measurement_kaf_shirt').value = data[0]['fields']['kaf_shirt'];
+
+                }
+            };
+            ajax.open("get", "/measurement/editMeasurement?measurementId=" + measurementId);
+            ajax.send()
+        }
+    </script>
+    <!--  / edit measurement  -->
+
+    <!-- update measurement  -->
+    <script type="text/javascript">
+        function updateMeasurement() {
+            var elements = document.getElementById("editMeasurementForm");
+            var formData = new FormData();
+            for (var i = 0; i < elements.length; i++) {
+                formData.append(elements[i].name, elements[i].value);
+            }
+            var ajax = new XMLHttpRequest();
+            ajax.onreadystatechange = function () {
+                if (ajax.readyState == 4) {
+                    var jsn = JSON.parse(ajax.responseText);
+                    var data = JSON.parse(jsn);
+                    document.getElementById("editMeasurementForm").reset();
+                    document.getElementById('closeEditMeasurement').click();
+
+                    document.getElementById("measurement_pent_lambai_" + data[0]['pk']).innerHTML = data[0]['fields']['lambai_pent'];
+                    document.getElementById("measurement_pent_kamar_" + data[0]['pk']).innerHTML = data[0]['fields']['kamar_pent'];
+                    document.getElementById("measurement_pent_seet_" + data[0]['pk']).innerHTML = data[0]['fields']['seet_pent'];
+                    document.getElementById("measurement_pent_mori_" + data[0]['pk']).innerHTML = data[0]['fields']['mori_pent'];
+                    document.getElementById("measurement_pent_jangh_" + data[0]['pk']).innerHTML = data[0]['fields']['jangh_pent'];
+                    document.getElementById("measurement_pent_jolo_" + data[0]['pk']).innerHTML = data[0]['fields']['jolo_pent'];
+                    document.getElementById("measurement_pent_gothan_" + data[0]['pk']).innerHTML = data[0]['fields']['gothan_pent'];
+                    document.getElementById("measurement_pent_lees_" + data[0]['pk']).innerHTML = data[0]['fields']['lees_pent'];
+
+                    document.getElementById("measurement_shirt_lambai_" + data[0]['pk']).innerHTML = data[0]['fields']['lambai_shirt'];
+                    document.getElementById("measurement_shirt_chati_" + data[0]['pk']).innerHTML = data[0]['fields']['chati_shirt'];
+                    document.getElementById("measurement_shirt_bay_" + data[0]['pk']).innerHTML = data[0]['fields']['bay_shirt'];
+                    document.getElementById("measurement_shirt_solder_" + data[0]['pk']).innerHTML = data[0]['fields']['solder_shirt'];
+                    document.getElementById("measurement_shirt_kamar_" + data[0]['pk']).innerHTML = data[0]['fields']['kamar_shirt'];
+                    document.getElementById("measurement_shirt_pech_" + data[0]['pk']).innerHTML = data[0]['fields']['pech_shirt'];
+                    document.getElementById("measurement_shirt_kolar_" + data[0]['pk']).innerHTML = data[0]['fields']['kolar_shirt'];
+                    document.getElementById("measurement_shirt_kaf_" + data[0]['pk']).innerHTML = data[0]['fields']['kaf_shirt'];
+
+
+                }
+            };
+            ajax.open("post", "/measurement/updateMeasurement/");
+            ajax.send(formData)
+        }
+    </script>
+    <!--  / update measurement  -->
+    <!-- -------------------------------- / measurement JS --------------------------- -->
+
+    <!-- create Order -->
+    <script type="text/javascript">
+        function createOrder(measurementId) {
+
+            var ajax = new XMLHttpRequest();
+            ajax.onreadystatechange = function () {
+                if (ajax.readyState == 4) {
+                    var jsn = JSON.parse(ajax.responseText);
+                    var data = JSON.parse(jsn);
+
+                    document.getElementById('create_order_measurementId').value = data[0]['pk'];
+                    document.getElementById('create_order_lambai_pent').value = data[0]['fields']['lambai_pent'];
+                    document.getElementById('create_order_kamar_pent').value = data[0]['fields']['kamar_pent'];
+                    document.getElementById('create_order_seet_pent').value = data[0]['fields']['seet_pent'];
+                    document.getElementById('create_order_mori_pent').value = data[0]['fields']['mori_pent'];
+                    document.getElementById('create_order_jangh_pent').value = data[0]['fields']['jangh_pent'];
+                    document.getElementById('create_order_jolo_pent').value = data[0]['fields']['jolo_pent'];
+                    document.getElementById('create_order_gothan_pent').value = data[0]['fields']['gothan_pent'];
+                    document.getElementById('create_order_lees_pent').value = data[0]['fields']['lees_pent'];
+
+                    document.getElementById('create_order_lambai_shirt').value = data[0]['fields']['lambai_shirt'];
+                    document.getElementById('create_order_chati_shirt').value = data[0]['fields']['chati_shirt'];
+                    document.getElementById('create_order_bay_shirt').value = data[0]['fields']['bay_shirt'];
+                    document.getElementById('create_order_solder_shirt').value = data[0]['fields']['solder_shirt'];
+                    document.getElementById('create_order_kamar_shirt').value = data[0]['fields']['kamar_shirt'];
+                    document.getElementById('create_order_pech_shirt').value = data[0]['fields']['pech_shirt'];
+                    document.getElementById('create_order_kolar_shirt').value = data[0]['fields']['kolar_shirt'];
+                    document.getElementById('create_order_kaf_shirt').value = data[0]['fields']['kaf_shirt'];
+
+                }
+            };
+            ajax.open("get", "/measurement/editMeasurement?measurementId=" + measurementId);
+            ajax.send()
+        }
+    </script>
+    <!--  / create order  -->
+
+    <!-- insert order  -->
+    <script type="text/javascript">
+        function placeOrder() {
+            var elements = document.getElementById("createOrderForm");
+            var formData = new FormData();
+            for (var i = 0; i < elements.length; i++) {
+                formData.append(elements[i].name, elements[i].value);
+            }
+            var create_order_photo = document.getElementById("create_order_photo");
+            var file = create_order_photo.files[0];
+            formData.append('photo', file);
+
+
+            var ajax = new XMLHttpRequest();
+            ajax.onreadystatechange = function () {
+                if (ajax.readyState == 4) {
+                    var jsn = JSON.parse(ajax.responseText);
+                    var data = JSON.parse(jsn);
+                    document.getElementById("createOrderForm").reset();
+                    document.getElementById('closeCreateOrder').click();
+
+                    document.getElementById('order_navigator').click();
+                    var d = "id=\"order_card_nav_pent_{{ i.id }}\"";
+
+                    var order_card_parent = document.getElementById('order_card_parent');
+                    var childElement = "<div class=\"col-sm-12 col-lg-3 col-md-6 d-flex\" id=\"order_card_child_" + data[0]['pk'] + "\">\n" +
+                        "                                <div class=\"card flex-fill\">\n" +
+                        "                                    <div class=\"card-header\">\n" +
+                        "                                        <ul role=\"tablist\" class=\"nav nav-pills card-header-pills float-left\">\n" +
+                        "                                            <li class=\"nav-item\">\n" +
+                        "                                                <a href=\"#order_tab_pent_" + data[0]['pk'] + "\" data-toggle=\"tab\"\n" + "id=\"order_card_nav_pent_" + data[0]['pk'] + "\"" +
+                        "                                                   class=\"nav-link active\">Pent</a>\n" +
+                        "                                            </li>\n" +
+                        "                                            <li class=\"nav-item\">\n" +
+                        "                                                <a href=\"#order_tab_shirt_" + data[0]['pk'] + "\" data-toggle=\"tab\"\n" + "id=\"order_card_nav_shirt_" + data[0]['pk'] + "\"" +
+                        "                                                   class=\"nav-link\">Shirt</a>\n" +
+                        "                                            </li>\n" +
+                        "                                            <li class=\"nav-item\">\n" +
+                        "                                                <a href=\"#order_tab_action_" + data[0]['pk'] + "\" data-toggle=\"tab\"\n" + "id=\"order_card_nav_action_" + data[0]['pk'] + "\"" +
+                        "                                                   class=\"nav-link \">Action</a>\n" +
+                        "                                            </li>\n";
+                    if (data[0]['fields']['photo'] != '') {
+                        var childElement = childElement + "                                            <li class=\"nav-item\">\n" +
+                            "                                                <a data-toggle=\"modal\"\n" +
+                            "                                                   data-target=\"#view_photo\" style=\"color: #333333;\"\n" + "id=\"order_card_nav_photo_" + data[0]['pk'] + "\"" +
+                            "                                                   onclick=\"view_photo('" + data[0]['fields']['photo'] + "')\" class=\"nav-link\">\n" +
+                            "                                                    <i class=\"fa fa-image\"></i></a>\n" +
+                            "                                            </li>\n";
+                    }
+                    var childElement = childElement + "                                        </ul>\n" +
+                        "                                    </div>\n" +
+                        "                                    <div class=\"tab-content\" style=\"padding-top: 0%\">\n" +
+                        "                                        <div role=\"tabpanel\" id=\"order_tab_pent_" + data[0]['pk'] + "\"\n" +
+                        "                                             class=\"tab-pane fade show active\">\n" +
+                        "                                            <div class=\"table-responsive\">\n" +
+                        "                                                <table class=\"table table-striped mb-0\">\n" +
+                        "                                                    <tbody>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Lambai</td>\n" +
+                        "                                                        <td id=\"order_pent_lambai_" + data[0]['pk'] + "\">" + data[0]['fields']['lambai_pent'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Kamar</td>\n" +
+                        "                                                        <td id=\"order_pent_kamar_" + data[0]['pk'] + "\">" + data[0]['fields']['kamar_pent'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Seet</td>\n" +
+                        "                                                        <td id=\"order_pent_seet_" + data[0]['pk'] + "\">" + data[0]['fields']['seet_pent'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Mori</td>\n" +
+                        "                                                        <td id=\"order_pent_mori_" + data[0]['pk'] + "\">" + data[0]['fields']['mori_pent'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Jangh</td>\n" +
+                        "                                                        <td id=\"order_pent_jangh_" + data[0]['pk'] + "\">" + data[0]['fields']['jangh_pent'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Jolo</td>\n" +
+                        "                                                        <td id=\"order_pent_jolo_" + data[0]['pk'] + "\">" + data[0]['fields']['jolo_pent'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Gothan</td>\n" +
+                        "                                                        <td id=\"order_pent_gothan_" + data[0]['pk'] + "\">" + data[0]['fields']['gothan_pent'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Lees</td>\n" +
+                        "                                                        <td id=\"order_pent_lees_" + data[0]['pk'] + "\">" + data[0]['fields']['lees_pent'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td id=\"order_pent_vigat_" + data[0]['pk'] + "\"\n" +
+                        "                                                            colspan=\"2\">" + data[0]['fields']['vigat_pent'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    </tbody>\n" +
+                        "                                                </table>\n" +
+                        "                                            </div>\n" +
+                        "                                        </div>\n" +
+                        "                                        <div role=\"tabpanel\" id=\"order_tab_shirt_" + data[0]['pk'] + "\"\n" +
+                        "                                             class=\"tab-pane fade\">\n" +
+                        "                                            <div class=\"table-responsive\">\n" +
+                        "                                                <table class=\"table table-striped mb-0\">\n" +
+                        "                                                    <tbody>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Lambai</td>\n" +
+                        "                                                        <td id=\"order_shirt_lambai_" + data[0]['pk'] + "\">" + data[0]['fields']['lambai_shirt'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Chati</td>\n" +
+                        "                                                        <td id=\"order_shirt_chati_" + data[0]['pk'] + "\">" + data[0]['fields']['chati_shirt'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Bay</td>\n" +
+                        "                                                        <td id=\"order_shirt_bay_" + data[0]['pk'] + "\">" + data[0]['fields']['bay_shirt'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Solder</td>\n" +
+                        "                                                        <td id=\"order_shirt_solder_" + data[0]['pk'] + "\">" + data[0]['fields']['solder_shirt'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Kamar</td>\n" +
+                        "                                                        <td id=\"order_shirt_kamar_" + data[0]['pk'] + "\">" + data[0]['fields']['kamar_shirt'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Pech</td>\n" +
+                        "                                                        <td id=\"order_shirt_pech_" + data[0]['pk'] + "\">" + data[0]['fields']['pech_shirt'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Kolar</td>\n" +
+                        "                                                        <td id=\"order_shirt_kolar_" + data[0]['pk'] + "\">" + data[0]['fields']['kolar_shirt'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>Kaf</td>\n" +
+                        "                                                        <td id=\"order_shirt_kaf_" + data[0]['pk'] + "\">" + data[0]['fields']['kaf_shirt'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td id=\"order_shirt_vigat_" + data[0]['pk'] + "\"\n" +
+                        "                                                            colspan=\"2\">" + data[0]['fields']['vigat_shirt'] + "</td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    </tbody>\n" +
+                        "                                                </table>\n" +
+                        "                                            </div>\n" +
+                        "                                        </div>\n" +
+                        "                                        <div role=\"tabpanel\" id=\"order_tab_action_" + data[0]['pk'] + "\"\n" +
+                        "                                             class=\"tab-pane fade\">\n" +
+                        "                                            <div class=\"table-responsive\">\n" +
+                        "                                                <table class=\"table table-striped mb-0\">\n" +
+                        "                                                    <tbody>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>\n" +
+                        "                                                            <a data-toggle=\"modal\"\n" +
+                        "                                                               data-target=\"#edit_order\" style=\"color: #333333;cursor: pointer;\"\n" +
+                        "                                                               onclick=\"editOrder(" + data[0]['pk'] + ")\">\n" +
+                        "                                                                <i class=\"fa fa-pencil col-2\"></i>Edit </a>\n" +
+                        "                                                        </td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>\n" +
+                        "                                                            <a style=\"color: #333333;cursor: pointer;\"\n" +
+                        "                                                               onclick=\"deleteOrder(" + data[0]['pk'] + ")\">\n" +
+                        "                                                                <i class=\"fa fa-trash col-2\"></i>Delete</a>\n" +
+                        "                                                        </td>\n" +
+                        "                                                    </tr>\n" +
+                        "                                                    <tr>\n" +
+                        "                                                        <td>\n" +
+                        "                                                            <a style=\"color: #333333;cursor: pointer;\"\n" +
+                        "                                                               onclick=\"changeStatus(" + data[0]['pk'] + ")\">\n" +
+                        "                                                                <i class=\"fa fa-check col-2\"></i>Done</a>\n" +
+                        "                                                        </td>\n" +
+                        "                                                    </tr>" +
+                        "                                                    </tbody>\n" +
+                        "                                                </table>\n" +
+                        "                                            </div>\n" +
+                        "                                        </div>\n" +
+                        "                                    </div>\n" +
+                        "                                </div>\n" +
+                        "                            </div>";
+
+                    order_card_parent.innerHTML = childElement + order_card_parent.innerHTML;
+
+
+                }
+            };
+            ajax.open("post", "/measurement/insertOrder/");
+            ajax.send(formData)
+        }
+    </script>
+    <!--  / insert order  -->
+
+    <!-- delete order -->
+    <script type="text/javascript">
+        function deleteOrder(orderId) {
+            var ajax = new XMLHttpRequest();
+            ajax.onreadystatechange = function () {
+                if (ajax.readyState == 4) {
+                    var jsn = JSON.parse(ajax.responseText);
+                    var data = JSON.parse(jsn);
+                    var deleteOrderCard = document.getElementById("order_card_child_" + data[0]['pk']);
+                    deleteOrderCard.remove();
+                }
+            };
+            ajax.open("get", "/measurement/deleteOrder?orderId=" + orderId, true);
+            ajax.send()
+        }
+    </script>
+    <!--  / delete order -->
+
+    <!-- edit order  -->
+    <script type="text/javascript">
+        function editOrder(orderId) {
+            var ajax = new XMLHttpRequest();
+            ajax.onreadystatechange = function () {
+                if (ajax.readyState == 4) {
+                    var jsn = JSON.parse(ajax.responseText);
+                    var data = JSON.parse(jsn);
+
+                    document.getElementById('edit_orderId').value = data[0]['pk'];
+                    document.getElementById('edit_order_lambai_pent').value = data[0]['fields']['lambai_pent'];
+                    document.getElementById('edit_order_kamar_pent').value = data[0]['fields']['kamar_pent'];
+                    document.getElementById('edit_order_seet_pent').value = data[0]['fields']['seet_pent'];
+                    document.getElementById('edit_order_mori_pent').value = data[0]['fields']['mori_pent'];
+                    document.getElementById('edit_order_jangh_pent').value = data[0]['fields']['jangh_pent'];
+                    document.getElementById('edit_order_jolo_pent').value = data[0]['fields']['jolo_pent'];
+                    document.getElementById('edit_order_gothan_pent').value = data[0]['fields']['gothan_pent'];
+                    document.getElementById('edit_order_lees_pent').value = data[0]['fields']['lees_pent'];
+                    document.getElementById('edit_order_vigat_pent').value = data[0]['fields']['vigat_pent'];
+
+                    document.getElementById('edit_order_lambai_shirt').value = data[0]['fields']['lambai_shirt'];
+                    document.getElementById('edit_order_chati_shirt').value = data[0]['fields']['chati_shirt'];
+                    document.getElementById('edit_order_bay_shirt').value = data[0]['fields']['bay_shirt'];
+                    document.getElementById('edit_order_solder_shirt').value = data[0]['fields']['solder_shirt'];
+                    document.getElementById('edit_order_kamar_shirt').value = data[0]['fields']['kamar_shirt'];
+                    document.getElementById('edit_order_pech_shirt').value = data[0]['fields']['pech_shirt'];
+                    document.getElementById('edit_order_kolar_shirt').value = data[0]['fields']['kolar_shirt'];
+                    document.getElementById('edit_order_kaf_shirt').value = data[0]['fields']['kaf_shirt'];
+                    document.getElementById('edit_order_vigat_shirt').value = data[0]['fields']['vigat_shirt'];
+
+                    if (data[0]['fields']['photo'] != '') {
+                        document.getElementById('load_edit_order_photo_output').src = "/media/" + data[0]['fields']['photo'];
+                    }
+
+                }
+            };
+            ajax.open("get", "/measurement/editOrder?orderId=" + orderId);
+            ajax.send()
+        }
+    </script>
+    <!--  / edit order  -->
+
+    <!-- update measurement  -->
+    <script type="text/javascript">
+        function updateOrder() {
+            var elements = document.getElementById("editOrderForm");
+            var formData = new FormData();
+            for (var i = 0; i < elements.length; i++) {
+                formData.append(elements[i].name, elements[i].value);
+            }
+
+            var create_order_photo = document.getElementById("edit_order_photo");
+            var file = create_order_photo.files[0];
+            formData.append('photo', file);
+
+            var ajax = new XMLHttpRequest();
+            ajax.onreadystatechange = function () {
+                if (ajax.readyState == 4) {
+                    var jsn = JSON.parse(ajax.responseText);
+                    var data = JSON.parse(jsn);
+                    document.getElementById("editOrderForm").reset();
+                    document.getElementById('closeEditOrder').click();
+
+                    document.getElementById("order_pent_lambai_" + data[0]['pk']).innerHTML = data[0]['fields']['lambai_pent'];
+                    document.getElementById("order_pent_kamar_" + data[0]['pk']).innerHTML = data[0]['fields']['kamar_pent'];
+                    document.getElementById("order_pent_seet_" + data[0]['pk']).innerHTML = data[0]['fields']['seet_pent'];
+                    document.getElementById("order_pent_mori_" + data[0]['pk']).innerHTML = data[0]['fields']['mori_pent'];
+                    document.getElementById("order_pent_jangh_" + data[0]['pk']).innerHTML = data[0]['fields']['jangh_pent'];
+                    document.getElementById("order_pent_jolo_" + data[0]['pk']).innerHTML = data[0]['fields']['jolo_pent'];
+                    document.getElementById("order_pent_gothan_" + data[0]['pk']).innerHTML = data[0]['fields']['gothan_pent'];
+                    document.getElementById("order_pent_lees_" + data[0]['pk']).innerHTML = data[0]['fields']['lees_pent'];
+                    document.getElementById("order_pent_vigat_" + data[0]['pk']).innerHTML = data[0]['fields']['vigat_pent'];
+
+                    document.getElementById("order_shirt_lambai_" + data[0]['pk']).innerHTML = data[0]['fields']['lambai_shirt'];
+                    document.getElementById("order_shirt_chati_" + data[0]['pk']).innerHTML = data[0]['fields']['chati_shirt'];
+                    document.getElementById("order_shirt_bay_" + data[0]['pk']).innerHTML = data[0]['fields']['bay_shirt'];
+                    document.getElementById("order_shirt_solder_" + data[0]['pk']).innerHTML = data[0]['fields']['solder_shirt'];
+                    document.getElementById("order_shirt_kamar_" + data[0]['pk']).innerHTML = data[0]['fields']['kamar_shirt'];
+                    document.getElementById("order_shirt_pech_" + data[0]['pk']).innerHTML = data[0]['fields']['pech_shirt'];
+                    document.getElementById("order_shirt_kolar_" + data[0]['pk']).innerHTML = data[0]['fields']['kolar_shirt'];
+                    document.getElementById("order_shirt_kaf_" + data[0]['pk']).innerHTML = data[0]['fields']['kaf_shirt'];
+                    document.getElementById("order_shirt_vigat_" + data[0]['pk']).innerHTML = data[0]['fields']['vigat_shirt'];
+
+                    document.getElementById('order_card_nav_photo_' + data[0]['pk']).setAttribute("onClick", "view_photo('" + data[0]['fields']['photo'] + "')");
+
+
+                }
+            };
+            ajax.open("post", "/measurement/updateOrder/");
+            ajax.send(formData)
+        }
+    </script>
+    <!--  / update measurement  -->
+
+    <!-- change status -->
+    <script type="text/javascript">
+        function changeStatus(orderId) {
+            var ajax = new XMLHttpRequest();
+            ajax.onreadystatechange = function () {
+                if (ajax.readyState == 4) {
+                    var jsn = JSON.parse(ajax.responseText);
+                    var data = JSON.parse(jsn);
+
+                    if (data[0]['fields']['status'] == 'done') {
+                        var deleteOrderCard = document.getElementById("order_card_child_" + data[0]['pk']);
+                        deleteOrderCard.remove();
+
+                        var history_card_parent = document.getElementById('history_card_parent');
+                        var child = "<div class=\"col-sm-12 col-lg-3 col-md-6 d-flex\" id=\"history_card_child_" + data[0]['pk'] + "\">\n" +
+                            "                                <div class=\"card flex-fill\">\n" +
+                            "                                    <div class=\"card-header\">\n" +
+                            "                                        <ul role=\"tablist\" class=\"nav nav-pills card-header-pills float-left\">\n" +
+                            "                                            <li class=\"nav-item\">\n" +
+                            "                                                <a href=\"#history_tab_pent_" + data[0]['pk'] + "\" data-toggle=\"tab\"\n" +
+                            "                                                   id=\"history_card_nav_pent_" + data[0]['pk'] + "\"\n" +
+                            "                                                   class=\"nav-link active\">Pent</a>\n" +
+                            "                                            </li>\n" +
+                            "                                            <li class=\"nav-item\">\n" +
+                            "                                                <a href=\"#history_tab_shirt_" + data[0]['pk'] + "\" data-toggle=\"tab\"\n" +
+                            "                                                   id=\"history_card_nav_shirt_" + data[0]['pk'] + "\"\n" +
+                            "                                                   class=\"nav-link\">Shirt</a>\n" +
+                            "                                            </li>\n" +
+                            "                                            <li class=\"nav-item\">\n" +
+                            "                                                <a href=\"#history_tab_action_" + data[0]['pk'] + "\" data-toggle=\"tab\"\n" +
+                            "                                                   id=\"history_card_nav_action_" + data[0]['pk'] + "\"\n" +
+                            "                                                   class=\"nav-link \">Action</a>\n" +
+                            "                                            </li>\n";
+                        if (data[0]['fields']['photo'] != '') {
+                            var child = child + "                                                <li class=\"nav-item\">\n" +
+                                "                                                    <a data-toggle=\"modal\"\n"
+                                +
+                                "                                                       data-target=\"#view_photo\" style=\"color: #333333;\"\n"
+                                +
+                                "                                                       id=\"history_card_nav_photo_"
+                                + data[0]['pk'] + "\"\n"
+                                +
+                                "                                                       onclick=\"view_photo('" + data[0]['fields']['photo'] + "')\" class=\"nav-link\">\n"
+                                +
+                                "                                                        <i class=\"fa fa-image\"></i></a>\n"
+                                +
+                                "                                                </li>\n";
+                        }
+                        var child = child + "                                        </ul>\n" +
+                            "                                    </div>\n" +
+                            "                                    <div class=\"tab-content\" style=\"padding-top: 0%\">\n" +
+                            "                                        <div role=\"tabpanel\" id=\"history_tab_pent_" + data[0]['pk'] + "\"\n" +
+                            "                                             class=\"tab-pane fade show active\">\n" +
+                            "                                            <div class=\"table-responsive\">\n" +
+                            "                                                <table class=\"table table-striped mb-0\">\n" +
+                            "                                                    <tbody>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Lambai</td>\n" +
+                            "                                                        <td id=\"history_pent_lambai_" + data[0]['pk'] + "\">" + data[0]['fields']['lambai_pent'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Kamar</td>\n" +
+                            "                                                        <td id=\"history_pent_kamar_" + data[0]['pk'] + "\">" + data[0]['fields']['kamar_pent'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Seet</td>\n" +
+                            "                                                        <td id=\"history_pent_seet_" + data[0]['pk'] + "\">" + data[0]['fields']['seet_pent'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Mori</td>\n" +
+                            "                                                        <td id=\"history_pent_mori_" + data[0]['pk'] + "\">" + data[0]['fields']['mori_pent'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Jangh</td>\n" +
+                            "                                                        <td id=\"history_pent_jangh_" + data[0]['pk'] + "\">" + data[0]['fields']['jangh_pent'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Jolo</td>\n" +
+                            "                                                        <td id=\"history_pent_jolo_" + data[0]['pk'] + "\">" + data[0]['fields']['jolo_pent'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Gothan</td>\n" +
+                            "                                                        <td id=\"history_pent_gothan_" + data[0]['pk'] + "\">" + data[0]['fields']['gothan_pent'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Lees</td>\n" +
+                            "                                                        <td id=\"history_pent_lees_" + data[0]['pk'] + "\">" + data[0]['fields']['lees_pent'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td id=\"history_pent_vigat_" + data[0]['pk'] + "\"\n" +
+                            "                                                            colspan=\"2\">" + data[0]['fields']['vigat_pent'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    </tbody>\n" +
+                            "                                                </table>\n" +
+                            "                                            </div>\n" +
+                            "                                        </div>\n" +
+                            "                                        <div role=\"tabpanel\" id=\"history_tab_shirt_" + data[0]['pk'] + "\"\n" +
+                            "                                             class=\"tab-pane fade\">\n" +
+                            "                                            <div class=\"table-responsive\">\n" +
+                            "                                                <table class=\"table table-striped mb-0\">\n" +
+                            "                                                    <tbody>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Lambai</td>\n" +
+                            "                                                        <td id=\"history_shirt_lambai_" + data[0]['pk'] + "\">" + data[0]['fields']['lambai_shirt'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Chati</td>\n" +
+                            "                                                        <td id=\"history_shirt_chati_" + data[0]['pk'] + "\">" + data[0]['fields']['chati_shirt'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Bay</td>\n" +
+                            "                                                        <td id=\"history_shirt_bay_" + data[0]['pk'] + "\">" + data[0]['fields']['bay_shirt'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Solder</td>\n" +
+                            "                                                        <td id=\"history_shirt_solder_" + data[0]['pk'] + "\">" + data[0]['fields']['solder_shirt'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Kamar</td>\n" +
+                            "                                                        <td id=\"history_shirt_kamar_" + data[0]['pk'] + "\">" + data[0]['fields']['kamar_shirt'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Pech</td>\n" +
+                            "                                                        <td id=\"history_shirt_pech_" + data[0]['pk'] + "\">" + data[0]['fields']['pech_shirt'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Kolar</td>\n" +
+                            "                                                        <td id=\"history_shirt_kolar_" + data[0]['pk'] + "\">" + data[0]['fields']['kolar_shirt'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Kaf</td>\n" +
+                            "                                                        <td id=\"history_shirt_kaf_" + data[0]['pk'] + "\">" + data[0]['fields']['kaf_shirt'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td id=\"history_shirt_vigat_" + data[0]['pk'] + "\"\n" +
+                            "                                                            colspan=\"2\">" + data[0]['fields']['vigat_shirt'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    </tbody>\n" +
+                            "                                                </table>\n" +
+                            "                                            </div>\n" +
+                            "                                        </div>\n" +
+                            "                                        <div role=\"tabpanel\" id=\"history_tab_action_" + data[0]['pk'] + "\"\n" +
+                            "                                             class=\"tab-pane fade\">\n" +
+                            "                                            <div class=\"table-responsive\">\n" +
+                            "                                                <table class=\"table table-striped mb-0\">\n" +
+                            "                                                    <tbody>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>\n" +
+                            "                                                            <a style=\"color: #333333;cursor: pointer;\"\n" +
+                            "                                                               onclick=\"changeStatus(" + data[0]['pk'] + ")\">\n" +
+                            "                                                                <i class=\"fa fa-repeat col-2\"></i>Restore</a>\n" +
+                            "                                                        </td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    </tbody>\n" +
+                            "                                                </table>\n" +
+                            "                                            </div>\n" +
+                            "                                        </div>\n" +
+                            "                                    </div>\n" +
+                            "                                </div>\n" +
+                            "                            </div>";
+
+                        history_card_parent.innerHTML = child + history_card_parent.innerHTML;
+
+
+                    }
+
+                    if (data[0]['fields']['status'] == 'pending') {
+                        var deleteHistoryCard = document.getElementById("history_card_child_" + data[0]['pk']);
+                        deleteHistoryCard.remove();
+
+                        var order_card_parent = document.getElementById('order_card_parent');
+                        var childElement = "<div class=\"col-sm-12 col-lg-3 col-md-6 d-flex\" id=\"order_card_child_" + data[0]['pk'] + "\">\n" +
+                            "                                <div class=\"card flex-fill\">\n" +
+                            "                                    <div class=\"card-header\">\n" +
+                            "                                        <ul role=\"tablist\" class=\"nav nav-pills card-header-pills float-left\">\n" +
+                            "                                            <li class=\"nav-item\">\n" +
+                            "                                                <a href=\"#order_tab_pent_" + data[0]['pk'] + "\" data-toggle=\"tab\"\n" + "id=\"order_card_nav_pent_" + data[0]['pk'] + "\"" +
+                            "                                                   class=\"nav-link active\">Pent</a>\n" +
+                            "                                            </li>\n" +
+                            "                                            <li class=\"nav-item\">\n" +
+                            "                                                <a href=\"#order_tab_shirt_" + data[0]['pk'] + "\" data-toggle=\"tab\"\n" + "id=\"order_card_nav_shirt_" + data[0]['pk'] + "\"" +
+                            "                                                   class=\"nav-link\">Shirt</a>\n" +
+                            "                                            </li>\n" +
+                            "                                            <li class=\"nav-item\">\n" +
+                            "                                                <a href=\"#order_tab_action_" + data[0]['pk'] + "\" data-toggle=\"tab\"\n" + "id=\"order_card_nav_action_" + data[0]['pk'] + "\"" +
+                            "                                                   class=\"nav-link \">Action</a>\n" +
+                            "                                            </li>\n";
+                        if (data[0]['fields']['photo'] != '') {
+                            var childElement = childElement + "                                            <li class=\"nav-item\">\n" +
+                                "                                                <a data-toggle=\"modal\"\n" +
+                                "                                                   data-target=\"#view_photo\" style=\"color: #333333;\"\n" + "id=\"order_card_nav_photo_" + data[0]['pk'] + "\"" +
+                                "                                                   onclick=\"view_photo('" + data[0]['fields']['photo'] + "')\" class=\"nav-link\">\n" +
+                                "                                                    <i class=\"fa fa-image\"></i></a>\n" +
+                                "                                            </li>\n";
+                        }
+                        var childElement = childElement + "                                        </ul>\n" +
+                            "                                    </div>\n" +
+                            "                                    <div class=\"tab-content\" style=\"padding-top: 0%\">\n" +
+                            "                                        <div role=\"tabpanel\" id=\"order_tab_pent_" + data[0]['pk'] + "\"\n" +
+                            "                                             class=\"tab-pane fade show active\">\n" +
+                            "                                            <div class=\"table-responsive\">\n" +
+                            "                                                <table class=\"table table-striped mb-0\">\n" +
+                            "                                                    <tbody>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Lambai</td>\n" +
+                            "                                                        <td id=\"order_pent_lambai_" + data[0]['pk'] + "\">" + data[0]['fields']['lambai_pent'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Kamar</td>\n" +
+                            "                                                        <td id=\"order_pent_kamar_" + data[0]['pk'] + "\">" + data[0]['fields']['kamar_pent'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Seet</td>\n" +
+                            "                                                        <td id=\"order_pent_seet_" + data[0]['pk'] + "\">" + data[0]['fields']['seet_pent'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Mori</td>\n" +
+                            "                                                        <td id=\"order_pent_mori_" + data[0]['pk'] + "\">" + data[0]['fields']['mori_pent'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Jangh</td>\n" +
+                            "                                                        <td id=\"order_pent_jangh_" + data[0]['pk'] + "\">" + data[0]['fields']['jangh_pent'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Jolo</td>\n" +
+                            "                                                        <td id=\"order_pent_jolo_" + data[0]['pk'] + "\">" + data[0]['fields']['jolo_pent'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Gothan</td>\n" +
+                            "                                                        <td id=\"order_pent_gothan_" + data[0]['pk'] + "\">" + data[0]['fields']['gothan_pent'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Lees</td>\n" +
+                            "                                                        <td id=\"order_pent_lees_" + data[0]['pk'] + "\">" + data[0]['fields']['lees_pent'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td id=\"order_pent_vigat_" + data[0]['pk'] + "\"\n" +
+                            "                                                            colspan=\"2\">" + data[0]['fields']['vigat_pent'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    </tbody>\n" +
+                            "                                                </table>\n" +
+                            "                                            </div>\n" +
+                            "                                        </div>\n" +
+                            "                                        <div role=\"tabpanel\" id=\"order_tab_shirt_" + data[0]['pk'] + "\"\n" +
+                            "                                             class=\"tab-pane fade\">\n" +
+                            "                                            <div class=\"table-responsive\">\n" +
+                            "                                                <table class=\"table table-striped mb-0\">\n" +
+                            "                                                    <tbody>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Lambai</td>\n" +
+                            "                                                        <td id=\"order_shirt_lambai_" + data[0]['pk'] + "\">" + data[0]['fields']['lambai_shirt'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Chati</td>\n" +
+                            "                                                        <td id=\"order_shirt_chati_" + data[0]['pk'] + "\">" + data[0]['fields']['chati_shirt'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Bay</td>\n" +
+                            "                                                        <td id=\"order_shirt_bay_" + data[0]['pk'] + "\">" + data[0]['fields']['bay_shirt'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Solder</td>\n" +
+                            "                                                        <td id=\"order_shirt_solder_" + data[0]['pk'] + "\">" + data[0]['fields']['solder_shirt'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Kamar</td>\n" +
+                            "                                                        <td id=\"order_shirt_kamar_" + data[0]['pk'] + "\">" + data[0]['fields']['kamar_shirt'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Pech</td>\n" +
+                            "                                                        <td id=\"order_shirt_pech_" + data[0]['pk'] + "\">" + data[0]['fields']['pech_shirt'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Kolar</td>\n" +
+                            "                                                        <td id=\"order_shirt_kolar_" + data[0]['pk'] + "\">" + data[0]['fields']['kolar_shirt'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>Kaf</td>\n" +
+                            "                                                        <td id=\"order_shirt_kaf_" + data[0]['pk'] + "\">" + data[0]['fields']['kaf_shirt'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td id=\"order_shirt_vigat_" + data[0]['pk'] + "\"\n" +
+                            "                                                            colspan=\"2\">" + data[0]['fields']['vigat_shirt'] + "</td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    </tbody>\n" +
+                            "                                                </table>\n" +
+                            "                                            </div>\n" +
+                            "                                        </div>\n" +
+                            "                                        <div role=\"tabpanel\" id=\"order_tab_action_" + data[0]['pk'] + "\"\n" +
+                            "                                             class=\"tab-pane fade\">\n" +
+                            "                                            <div class=\"table-responsive\">\n" +
+                            "                                                <table class=\"table table-striped mb-0\">\n" +
+                            "                                                    <tbody>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>\n" +
+                            "                                                            <a data-toggle=\"modal\"\n" +
+                            "                                                               data-target=\"#edit_order\" style=\"color: #333333;\"\n" +
+                            "                                                               onclick=\"editOrder(" + data[0]['pk'] + ")\">\n" +
+                            "                                                                <i class=\"fa fa-pencil col-2\"></i>Edit </a>\n" +
+                            "                                                        </td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>\n" +
+                            "                                                            <a style=\"color: #333333;\"\n" +
+                            "                                                               onclick=\"deleteOrder(" + data[0]['pk'] + ")\">\n" +
+                            "                                                                <i class=\"fa fa-trash col-2\"></i>Delete</a>\n" +
+                            "                                                        </td>\n" +
+                            "                                                    </tr>\n" +
+                            "                                                    <tr>\n" +
+                            "                                                        <td>\n" +
+                            "                                                            <a style=\"color: #333333;\"\n" +
+                            "                                                               onclick=\"changeStatus(" + data[0]['pk'] + ")\">\n" +
+                            "                                                                <i class=\"fa fa-check col-2\"></i>Done</a>\n" +
+                            "                                                        </td>\n" +
+                            "                                                    </tr>" +
+                            "                                                    </tbody>\n" +
+                            "                                                </table>\n" +
+                            "                                            </div>\n" +
+                            "                                        </div>\n" +
+                            "                                    </div>\n" +
+                            "                                </div>\n" +
+                            "                            </div>";
+
+                        order_card_parent.innerHTML = childElement + order_card_parent.innerHTML;
+
+                    }
+                }
+            };
+            ajax.open("get", "/measurement/changeStatus?orderId=" + orderId, true);
+            ajax.send()
+        }
+    </script>
+    <!--  / change status -->
+
+
+{% endblock %}

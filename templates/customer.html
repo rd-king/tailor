@@ -1,0 +1,400 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <!-- search from table -->
+    <script>
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#clientTable tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+    <!-- / search from table -->
+
+    <style>
+        #snackbar {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            font-size: 17px;
+        }
+
+        #snackbar.show {
+            visibility: visible;
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @-webkit-keyframes fadein {
+            from {
+                bottom: 0;
+                opacity: 0;
+            }
+            to {
+                bottom: 30px;
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadein {
+            from {
+                bottom: 0;
+                opacity: 0;
+            }
+            to {
+                bottom: 30px;
+                opacity: 1;
+            }
+        }
+
+        @-webkit-keyframes fadeout {
+            from {
+                bottom: 30px;
+                opacity: 1;
+            }
+            to {
+                bottom: 0;
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeout {
+            from {
+                bottom: 30px;
+                opacity: 1;
+            }
+            to {
+                bottom: 0;
+                opacity: 0;
+            }
+        }
+    </style>
+
+    <!-- Page Wrapper -->
+    <div class="page-wrapper">
+        <div class="content container-fluid">
+
+
+            <!-- Add Client Modal -->
+            <div id="add_client" class="modal custom-modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Add Client</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="post_form">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Name <span
+                                                    class="text-danger">*</span></label>
+                                            <input class="form-control" type="text" name="name" id="name_i"
+                                                   required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Mobile No<span
+                                                    class="text-danger">*</span></label>
+                                            <input class="form-control" type="number" name="number" id="number_i"
+                                                   required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Address <span
+                                                    class="text-danger">*</span></label>
+                                            <input class="form-control" type="text" name="address" id="address_i"
+                                                   required>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="submit-section">
+                                    <button type="button" class="btn btn-primary submit-btn" id="btnSave"
+                                            onclick="insertCustomer()">
+                                        Submit
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Add Client Modal -->
+
+            <!-- Edit Client Modal -->
+            <div id="edit_Client" class="modal custom-modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit Client</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="edit_form">
+                                <input type="hidden" id="customerId_e">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Name <span
+                                                    class="text-danger">*</span></label>
+                                            <input class="form-control" type="text" name="name" id="name_e"
+                                                   required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Mobile No<span
+                                                    class="text-danger">*</span></label>
+                                            <input class="form-control" type="tel" name="number" id="number_e"
+                                                   required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Address <span
+                                                    class="text-danger">*</span></label>
+                                            <input class="form-control" type="text" name="address" id="address_e"
+                                                   required>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="submit-section">
+                                    <button type="button" class="btn btn-primary submit-btn" id="updateBtn">
+                                        Submit
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Edit Client Modal -->
+
+            <!-- validation_client Client Modal -->
+            <div id="validation_client" class="modal custom-modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit Client</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="submit-section">
+                                <a>
+                                    <button type="button" class="btn btn-primary submit-btn" id="updateBtn">
+                                        Submit
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /validation_client Client Modal -->
+
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <input class="form-control" type="text" name="myInput" id="myInput"
+                                           onkeyup="searchUser()">
+                                </div>
+
+                                <div class="col-auto float-right ml-auto">
+                                    <a data-toggle="modal" data-target="#add_client" style="cursor: pointer;"><i
+                                            class="fa fa-user-plus"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="datatable table table-stripped mb-0" id="clientTable">
+                                    <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Number</th>
+                                        <th>Address</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for i in customerList %}
+                                        <tr id="{{ i.id }}">
+                                            <td><a href="/measurement/viewMeasurement/?customerId={{ i.id }}"
+                                                   style="color: black">{{ i.name }}</a></td>
+                                            <td>{{ i.number }}</td>
+                                            <td>{{ i.address }}</td>
+                                            <td><a id="{{ i.id }}" class="editCustomer" style="cursor: pointer;"><i
+                                                    class="fa fa-pencil"
+                                                    style="color: lightseagreen"></i></a>
+                                            </td>
+                                            <td><a id="{{ i.id }}" class="deleteCustomer" style="cursor: pointer;"><i
+                                                    class="fa fa-trash"
+                                                    style="color: red"></i></a>
+                                            </td>
+
+                                        </tr>
+                                    {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- /Main Wrapper -->
+
+    <div id="snackbar"></div>
+
+    <!-- insert -->
+    <script type="text/javascript">
+        $(document).on('click', '#btnSave', function () {
+            var name = $('#name_i').val();
+            var number = $('#number_i').val();
+            var address = $('#address_i').val();
+            var csrf = $('input[name=csrfmiddlewaretoken]').val();
+            if (name.length !== 0 && number.length !== 0 && address.length !== 0) {
+                $.ajax({
+                    type: "POST",
+                    url: "/customer/insertCustomer/",
+                    data: {csrfmiddlewaretoken: csrf, name: name, number: number, address: address},
+                    success: function (data) {
+                        $(".close").click();
+                        $('#post_form').trigger("reset");
+
+                        if (data.exist == 'yes') {
+                            document.getElementById('snackbar').innerHTML = data.name + " already exist."
+                        }
+                        else {
+                            $('<tr id=' + data.id + '>' +
+                                '<td><a href="/measurement/viewMeasurement/?customerId=' + data.id + '" style="color: black">' + data.name + '</a></td>' +
+                                '<td>' + data.number + '</td>' +
+                                '<td>' + data.address + '</td>' +
+                                '<td><a class="editCustomer" id=' + data.id + ' style="cursor: pointer;"><i class="fa fa-pencil" style="color: lightseagreen"></i></a></td>' +
+                                '<td><a class="deleteCustomer" id=' + data.id + ' style="cursor: pointer;"><i class="fa fa-trash" style="color: red"></i></a></td>' +
+                                '</tr>').insertBefore('table > tbody > tr:first');
+                            document.getElementById('snackbar').innerHTML = data.name + " created successfully."
+                        }
+                        var x = document.getElementById("snackbar");
+                        x.className = "show";
+                        setTimeout(function () {
+                            x.className = x.className.replace("show", "");
+                        }, 3000);
+
+
+                    }
+                });
+            }
+
+        });
+    </script>
+    <!-- end insert -->
+
+    <!-- delete -->
+    <script type="text/javascript">
+        $(document).on('click', '.deleteCustomer', function () {
+            var customerId = this.id;
+            $.ajax({
+                type: "GET",
+                url: "/customer/deleteCustomer/",
+                data: {customerId: customerId},
+                success: function (data) {
+                    $('#' + data.customerId).remove();
+                }
+            });
+
+        });
+    </script>
+    <!-- end delete -->
+
+    <!-- edit -->
+    <script type="text/javascript">
+        $(document).on('click', '.editCustomer', function () {
+            var customerId = this.id;
+            $.ajax({
+                type: "GET",
+                url: "/customer/editCustomer/",
+                data: {customerId: customerId},
+                success: function (data) {
+                    var edit = JSON.parse(data);
+                    $("#edit_Client").modal();
+                    $("#name_e").val(edit[0]['fields']['name']);
+                    $("#number_e").val(edit[0]['fields']['number']);
+                    $("#address_e").val(edit[0]['fields']['address']);
+                    $("#customerId_e").val(edit[0]['pk']);
+                }
+            });
+
+        });
+    </script>
+    <!-- end edit -->
+
+    <!-- update -->
+    <script type="text/javascript">
+        $(document).on('click', '#updateBtn', function () {
+            var customerId = $('#customerId_e').val();
+            var name = $('#name_e').val();
+            var number = $('#number_e').val();
+            var address = $('#address_e').val();
+            var csrf = $('input[name=csrfmiddlewaretoken]').val();
+            if (name.length !== 0 && number.length !== 0 && address.length !== 0) {
+                $.ajax({
+                    type: "POST",
+                    url: "/customer/updateCustomer/",
+                    data: {
+                        csrfmiddlewaretoken: csrf,
+                        name: name,
+                        number: number,
+                        address: address,
+                        customerId: customerId
+                    },
+                    success: function (data) {
+                        var update = JSON.parse(data);
+                        $(".close").click();
+                        $('#edit_form').trigger("reset");
+
+                        $('#clientTable').find('tr#' + update[0]['pk']).find('td:eq(0)').html('<a href="/measurement/viewMeasurement/?customerId=' + update[0]['pk'] + '" style="color: black">' + update[0]['fields']['name'] + '</a>');
+                        $('#clientTable').find('tr#' + update[0]['pk']).find('td:eq(1)').html(update[0]['fields']['number']);
+                        $('#clientTable').find('tr#' + update[0]['pk']).find('td:eq(2)').html(update[0]['fields']['address']);
+                    }
+                });
+            }
+
+        });
+    </script>
+    <!-- end update -->
+
+{% endblock %}
